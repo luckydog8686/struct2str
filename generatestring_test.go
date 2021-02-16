@@ -10,7 +10,7 @@ type User struct {
 
 func TestGenerateString(t *testing.T) {
 	u := User{"TangXiaodong", 100, "0000123"}
-	str,err := GenerateString(&u)
+	str,err := GenerateString(u)
 	if err != nil {
 		t.Fatal(err)
 	}

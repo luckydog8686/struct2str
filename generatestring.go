@@ -11,18 +11,27 @@ import (
 func GenerateString(obj interface{}) (string, error) {
 	if reflect.TypeOf(obj).Kind() == reflect.Ptr {
 		if reflect.TypeOf(obj).Elem().Kind() == reflect.Struct {
-			return GenerateStringFromStructPtr(obj)
+			return GenerateStringFromStructPtr(obj,true)
 		}
 	}
 	if reflect.TypeOf(obj).Kind() == reflect.Struct {
-		return GenerateStringFromStruct(obj)
+		return GenerateStringFromStructPtr(obj,false)
 	}
 	return "", errors.New("Unsupport Type")
 }
 
-func GenerateStringFromStructPtr(obj interface{}) (string, error) {
-	t := reflect.TypeOf(obj).Elem()
-	iValue := reflect.ValueOf(obj).Elem()
+func GenerateStringFromStructPtr(obj interface{},isPtr bool) (string, error) {
+	var t reflect.Type
+	var iValue reflect.Value
+	if isPtr{
+		t = reflect.TypeOf(obj).Elem()
+		iValue = reflect.ValueOf(obj).Elem()
+	}else {
+		t = reflect.TypeOf(obj)
+		iValue = reflect.ValueOf(obj)
+	}
+
+
 	numField := t.NumField()
 	structKeys := make([]string, 0, numField)
 	for i := 0; i < numField; i++ {
