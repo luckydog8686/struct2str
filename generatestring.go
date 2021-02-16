@@ -6,6 +6,7 @@ import (
 	"github.com/luckydog8686/logs"
 	"reflect"
 	"sort"
+	"strings"
 )
 
 func GenerateString(obj interface{}) (string, error) {
@@ -50,6 +51,9 @@ func GenerateStringFromStructPtr(obj interface{},isPtr bool) (string, error) {
 		if ok {
 			key = jsonTagValue
 		}
+		if strings.ToUpper(key)=="SIGN" || strings.ToUpper(key)=="SIGNATURE"{
+			continue
+		}
 
 		if i == 0 {
 			msg = fmt.Sprintf("%s=%v", key,iValue.FieldByName(fieldName).Interface())
@@ -61,7 +65,4 @@ func GenerateStringFromStructPtr(obj interface{},isPtr bool) (string, error) {
 	return msg, nil
 }
 
-func GenerateStringFromStruct(obj interface{}) (string, error) {
 
-	return "", nil
-}
